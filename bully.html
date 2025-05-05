@@ -1,0 +1,35 @@
+class BullyAlgorithm:
+    def __init__(self, nodeld, nodes):
+        self.nodeld = nodeld
+        self.nodes = nodes
+
+    def startElection(self):
+        highestNodeld = self.nodeld
+
+        # Send "Coordinator Election" messages to all higher ID nodes
+        for i in range(self.nodeld + 1, max(self.nodes) + 1):
+            if i in self.nodes:
+                print(f"Node {self.nodeld} sends Coordinator Election message to Node {i}")
+
+        # Wait for "OK" messages from higher ID nodes
+        for i in range(self.nodeld + 1, max(self.nodes) + 1):
+            if i in self.nodes:
+                print(f"Node {self.nodeld} waiting for OK message from Node {i}")
+                print(f"Node {self.nodeld} received OK message from Node {i}")
+                highestNodeld = i
+
+        # If a higher node responded, send coordinator message to that node
+        if highestNodeld != self.nodeld:
+            print(f"Node {self.nodeld} sends Coordinator message to Node {highestNodeld}")
+        else:
+            print(f"Node {self.nodeld} is the new coordinator")
+
+
+# Create a list of node IDs
+nodes = [1, 2, 3, 4, 5]
+
+# Create an instance of BullyAlgorithm with a specific node ID and the list of nodes
+bully = BullyAlgorithm(3, nodes)
+
+# Start the election process
+bully.startElection()
